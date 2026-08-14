@@ -116,6 +116,12 @@
   border-top: 1px solid var(--line-hairline);
 }
 
+.sb-trust-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+  gap: var(--space-8);
+}
+
 .sb-trust-heading {
   font-size: var(--text-lg);
   color: var(--forest-deep);

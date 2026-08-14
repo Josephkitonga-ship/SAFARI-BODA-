@@ -6,8 +6,8 @@ This README covers the frontend scaffold as it stands right now: what's built, w
 
 ## Status: early scaffold, not yet functional end-to-end
 
-What works: the design, the routing, the page structure.
-What doesn't yet: real data. There is no Supabase project connected. Every page that needs data either shows mock content or a "will appear here once wired in" placeholder.
+What works: the design, the routing, the page structure, and the public booking flow end-to-end (details → simulated M-Pesa payment → confirmation with a generated booking reference).
+What doesn't yet: real data. There is no Supabase project connected. Every page that needs data either shows mock content or a "will appear here once wired in" placeholder. The M-Pesa step is simulated (a timed delay, no real Daraja call) — see "What's next" below.
 
 ## Two versions in this repo
 
@@ -111,9 +111,10 @@ This guard is **client-side convenience only** — it stops the UI from showing 
 
 Full reasoning was worked through before any code was written — see the design plan discussed in-conversation. Summary:
 
-- **Colors** are sourced from the actual place (Kimana → Amboseli road), not a generic "Kenya palette": savanna-cream background, murram-orange as the one bold accent (the literal color of the road tourists ride on), forest-deep for rider/admin working surfaces, sage-bush and acacia-gold used sparingly.
+- **Colors** are sourced from the actual place (Kimana → Amboseli road), not a generic "Kenya palette": savanna-cream background, murram-orange as the one bold accent (the literal color of the road tourists ride on), forest-deep for rider/admin working surfaces, sage-bush and acacia-gold used sparingly. Revised for stronger contrast: card surfaces (`--surface-white`) are deliberately brighter than the page background so they lift off it, text uses a near-black (`--acacia-shadow`) rather than a mid-tone, and murram-orange was pushed more saturated so it reads as a confident accent rather than a muted terracotta.
 - **Signature element**: `.horizon` in `components.css` — a CSS-only Kilimanjaro silhouette + road line, sitting behind glass panels. This is what makes the glassmorphism mean something specific to this brand, rather than being a generic frosted-card effect.
 - **Type**: Space Grotesk (display), Inter (body), JetBrains Mono (prices, timestamps, booking references).
+- **Packages** display as a horizontal snap-scroll carousel (`.grid-packages`, one card at a time with a peek of the next, dot indicators below) rather than a static grid — the mobile-first pattern for browsing 3 tiers on a phone.
 
 ## Current pricing (locked)
 

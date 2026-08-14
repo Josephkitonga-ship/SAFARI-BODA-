@@ -30,3 +30,34 @@
   text-transform: uppercase;
   letter-spacing: 0.03em;
 }
+
+.sb-admin-table {
+  width: 100%;
+  border-collapse: collapse;
+  margin-top: var(--space-6);
+  font-size: var(--text-sm);
+}
+
+.sb-admin-table th {
+  text-align: left;
+  padding: var(--space-3);
+  border-bottom: 2px solid var(--line-hairline);
+  color: var(--sage-bush);
+  font-size: var(--text-xs);
+  text-transform: uppercase;
+  letter-spacing: 0.03em;
+}
+
+.sb-admin-table td {
+  padding: var(--space-3);
+  border-bottom: 1px solid var(--line-hairline);
+  vertical-align: top;
+}
+
+.sb-admin-table select {
+  font-family: var(--font-body);
+  font-size: var(--text-sm);
+  padding: var(--space-2);
+  border: 1px solid var(--line-hairline);
+  border-radius: var(--radius-sm);
+}

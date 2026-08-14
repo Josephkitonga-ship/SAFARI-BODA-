@@ -143,7 +143,7 @@
    -------------------------------------------- */
 
 .card {
-  background: var(--white);
+  background: var(--surface-white);
   border-radius: var(--radius-md);
   padding: var(--space-6);
   box-shadow: var(--shadow-soft);
@@ -260,11 +260,12 @@
   border-radius: 999px;
 }
 
-.badge-pending   { background: rgba(212, 166, 43, 0.18); color: #8A6A1C; }
-.badge-assigned  { background: rgba(122, 139, 74, 0.18); color: var(--forest-deep); }
-.badge-completed { background: rgba(92, 122, 62, 0.2);  color: var(--success-tone); }
-.badge-cancelled { background: rgba(168, 68, 45, 0.15); color: var(--danger-tone); }
-.badge-noshow    { background: rgba(43, 42, 31, 0.1);   color: var(--acacia-shadow); }
+.badge-pending   { background: rgba(232, 178, 61, 0.2); color: #8A6A1C; }
+.badge-assigned  { background: rgba(143, 163, 94, 0.22); color: var(--forest-deep); }
+.badge-in_progress { background: rgba(224, 103, 58, 0.16); color: var(--murram-orange); }
+.badge-completed { background: rgba(76, 107, 52, 0.2);  color: var(--success-tone); }
+.badge-cancelled { background: rgba(176, 64, 42, 0.15); color: var(--danger-tone); }
+.badge-no_show   { background: rgba(31, 29, 20, 0.1);   color: var(--acacia-shadow); }
 
 /* --------------------------------------------
    Layout helpers
@@ -283,9 +284,52 @@
 .gap-6 { gap: var(--space-6); }
 
 .grid-packages {
-  display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
-  gap: var(--space-6);
+  display: flex;
+  gap: var(--space-4);
+  overflow-x: auto;
+  scroll-snap-type: x mandatory;
+  -webkit-overflow-scrolling: touch;
+  padding: var(--space-2) var(--space-6) var(--space-6);
+  margin: 0 calc(var(--space-6) * -1);
+  scrollbar-width: none;
+}
+
+.grid-packages::-webkit-scrollbar {
+  display: none;
+}
+
+.grid-packages > .card {
+  flex: 0 0 82%;
+  scroll-snap-align: center;
+  max-width: 340px;
+}
+
+@media (min-width: 720px) {
+  .grid-packages > .card {
+    flex: 0 0 320px;
+  }
+}
+
+/* Dot indicators, added below the scroller by JS */
+.sb-scroll-dots {
+  display: flex;
+  justify-content: center;
+  gap: var(--space-2);
+  margin-top: var(--space-2);
+}
+
+.sb-scroll-dot {
+  width: 6px;
+  height: 6px;
+  border-radius: 50%;
+  background: var(--line-hairline);
+  transition: background var(--duration-fast) var(--ease-out),
+              transform var(--duration-fast) var(--ease-out);
+}
+
+.sb-scroll-dot--active {
+  background: var(--murram-orange);
+  transform: scale(1.3);
 }
 
 @media (max-width: 640px) {

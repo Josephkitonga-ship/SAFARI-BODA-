@@ -24,11 +24,11 @@ SafariBoda.components.navbar = {
     const role = SafariBoda.state.role;
 
     const links = {
-      guest:   [{ href: '#/', label: 'Home' }, { href: '#/packages', label: 'Packages' }],
-      tourist: [{ href: '#/', label: 'Home' }, { href: '#/packages', label: 'Packages' }],
-      rider:   [{ href: '#/rider', label: 'Dashboard' }, { href: '#/rider/bookings', label: 'My bookings' }],
+      guest:   [{ href: '#/', label: 'Home' }, { href: '#/request', label: 'Request a ride' }, { href: '#/become-a-rider', label: 'Become a rider' }],
+      client:  [{ href: '#/', label: 'Home' }, { href: '#/request', label: 'Request a ride' }, { href: '#/become-a-rider', label: 'Become a rider' }],
+      rider:   [{ href: '#/rider', label: 'Dashboard' }, { href: '#/rider/orders', label: 'My orders' }],
       admin:   [{ href: '#/admin', label: 'Dashboard' }, { href: '#/admin/riders', label: 'Riders' },
-                { href: '#/admin/bookings', label: 'Bookings' }, { href: '#/admin/packages', label: 'Packages' }],
+                { href: '#/admin/orders', label: 'Orders' }, { href: '#/admin/vendors', label: 'Vendors' }],
     }[role] || [];
 
     const linksHtml = links.map(l =>
@@ -37,7 +37,7 @@ SafariBoda.components.navbar = {
 
     const authHtml = SafariBoda.auth.isSignedIn()
       ? `<button class="btn btn-ghost" id="sb-signout-btn">Sign out</button>`
-      : `<a href="#/" class="btn btn-primary">Book now</a>`;
+      : `<a href="#/signin" class="btn btn-primary">Sign in</a>`;
 
     return `
       <div class="container sb-navbar-inner">

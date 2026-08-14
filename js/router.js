@@ -11,16 +11,18 @@ SafariBoda.router = {
 
   routes: [
     { pattern: '#/',                 handler: () => SafariBoda.views.public.home() },
-    { pattern: '#/packages',         handler: () => SafariBoda.views.public.packages() },
-    { pattern: '#/book/:packageId',  handler: (p) => SafariBoda.views.public.booking(p.packageId) },
+    { pattern: '#/signin',           handler: () => SafariBoda.views.public.auth({}, 'signin') },
+    { pattern: '#/signup',           handler: () => SafariBoda.views.public.auth({}, 'signup') },
+    { pattern: '#/request',          handler: () => SafariBoda.views.public.request() },
+    { pattern: '#/become-a-rider',   handler: () => SafariBoda.views.rider.register(), guard: 'signedIn' },
 
     { pattern: '#/rider',            handler: () => SafariBoda.views.rider.dashboard(), guard: 'rider' },
-    { pattern: '#/rider/bookings',   handler: () => SafariBoda.views.rider.bookings(),  guard: 'rider' },
+    { pattern: '#/rider/orders',     handler: () => SafariBoda.views.rider.bookings(),  guard: 'rider' },
 
     { pattern: '#/admin',            handler: () => SafariBoda.views.admin.dashboard(), guard: 'admin' },
     { pattern: '#/admin/riders',     handler: () => SafariBoda.views.admin.riders(),    guard: 'admin' },
-    { pattern: '#/admin/bookings',   handler: () => SafariBoda.views.admin.bookings(),  guard: 'admin' },
-    { pattern: '#/admin/packages',   handler: () => SafariBoda.views.admin.packages(),  guard: 'admin' },
+    { pattern: '#/admin/orders',     handler: () => SafariBoda.views.admin.bookings(),  guard: 'admin' },
+    { pattern: '#/admin/vendors',    handler: () => SafariBoda.views.admin.vendors(),   guard: 'admin' },
   ],
 
   /** Matches a hash like "#/book/123" against a pattern like "#/book/:packageId" */
@@ -43,6 +45,7 @@ SafariBoda.router = {
 
   _guardPasses(guard) {
     if (!guard) return true;
+    if (guard === 'signedIn') return SafariBoda.auth.isSignedIn();
     if (guard === 'rider') return SafariBoda.auth.isRider() || SafariBoda.auth.isAdmin();
     if (guard === 'admin') return SafariBoda.auth.isAdmin();
     return true;
@@ -78,13 +81,16 @@ SafariBoda.router = {
   },
 
   _renderForbidden(requiredRole) {
+    const message = requiredRole === 'admin' ? 'Safari Boda admins'
+      : requiredRole === 'rider' ? 'riders'
+      : 'signed-in users';
     document.getElementById('app').innerHTML = `
       <div class="container" style="padding-top: var(--space-24); text-align: center;">
         <h1>You don't have access to this page</h1>
         <p style="color: var(--sage-bush); margin-top: var(--space-4);">
-          This area is for ${requiredRole === 'admin' ? 'Safari Boda admins' : 'riders'} only.
+          This area is for ${message} only.
         </p>
-        <a href="#/" class="btn btn-primary" style="margin-top: var(--space-6);">Back to home</a>
+        <a href="#/signin" class="btn btn-primary" style="margin-top: var(--space-6);">Sign in</a>
       </div>
     `;
   },

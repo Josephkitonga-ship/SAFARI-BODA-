@@ -8,22 +8,23 @@
 
 :root {
   /* Color tokens */
-  --savanna-cream:   #F5EFDD;  /* base background — dry-season grass */
-  --acacia-shadow:   #2B2A1F;  /* near-black text — shade under an acacia */
-  --sage-bush:       #7A8B4A;  /* muted secondary green — scrubland */
-  --murram-orange:   #C1622D;  /* primary accent — the actual road color */
-  --forest-deep:     #3E5C46;  /* dark green — rider/admin working surfaces */
-  --acacia-gold:     #D4A62B;  /* sparing highlight — late afternoon light */
+  --savanna-cream:   #F7F2E4;  /* base background — dry-season grass, warm */
+  --acacia-shadow:   #1F1D14;  /* near-black text — pushed darker for real contrast */
+  --sage-bush:       #8FA35E;  /* secondary green — scrubland, lighter so it doesn't fight murram */
+  --murram-orange:   #E0673A;  /* primary accent — more saturated, the road, meant to pop */
+  --forest-deep:     #2B4030;  /* dark green — rider/admin surfaces, richer/darker */
+  --acacia-gold:     #E8B23D;  /* highlight accent — late afternoon light */
+  --surface-white:   #FFFDF8;  /* cards — brighter than background, not blended into it */
 
   /* Derived / functional tones */
-  --cream-dim:       #EAE2C9;
-  --cream-glass:     rgba(245, 239, 221, 0.62);
-  --shadow-glass:    rgba(43, 42, 31, 0.08);
-  --line-hairline:   rgba(43, 42, 31, 0.12);
-  --murram-glow:     rgba(193, 98, 45, 0.18);
-  --success-tone:    #5C7A3E;
-  --danger-tone:     #A8442D;
-  --white:           #FFFDF7;
+  --cream-dim:       #ECE3C8;
+  --cream-glass:     rgba(247, 242, 228, 0.68);
+  --shadow-glass:    rgba(31, 29, 20, 0.10);
+  --line-hairline:   rgba(31, 29, 20, 0.14);
+  --murram-glow:     rgba(224, 103, 58, 0.28);
+  --success-tone:    #4C6B34;
+  --danger-tone:     #B0402A;
+  --white:           #FFFDF8;
 
   /* Typography */
   --font-display: 'Space Grotesk', 'Arial Narrow', sans-serif;
@@ -55,8 +56,8 @@
   --radius-sm: 6px;
   --radius-md: 12px;
   --radius-lg: 20px;
-  --shadow-soft: 0 8px 30px var(--shadow-glass);
-  --shadow-lift: 0 16px 48px rgba(43, 42, 31, 0.14);
+  --shadow-soft: 0 10px 32px var(--shadow-glass);
+  --shadow-lift: 0 20px 56px rgba(31, 29, 20, 0.18);
 
   /* Motion */
   --ease-out: cubic-bezier(0.16, 1, 0.3, 1);
