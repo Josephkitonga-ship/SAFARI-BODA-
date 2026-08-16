@@ -1,11 +1,10 @@
 /* ============================================
    SAFARI BODA — REQUEST VIEW (public)
-   Replaces the old fixed-package booking flow. A
-   client (transport OR delivery) requests a pickup
-   and dropoff; an admin assigns a rider. M-Pesa
-   fields exist on the order but are NOT called yet —
-   Daraja integration is a deliberately separate,
-   later step (see README).
+   Client (transport OR delivery) requests a pickup
+   and dropoff, sets a deposit amount, then confirms
+   via a real M-Pesa STK Push through the
+   mpesa-stk-push Edge Function. An admin assigns a
+   rider once the order exists.
    ============================================ */
 
 SafariBoda.views.public.request = function () {
@@ -46,16 +45,22 @@ SafariBoda.views.public.request = function () {
                    value="${SafariBoda.state.profile?.full_name || ''}">
           </div>
           <div class="field">
-            <label for="sb-req-phone">Phone number</label>
+            <label for="sb-req-phone">Phone number (M-Pesa)</label>
             <input type="tel" id="sb-req-phone" name="contactPhone" required placeholder="+254 7XX XXX XXX"
                    value="${SafariBoda.state.profile?.phone || ''}">
+          </div>
+          <div class="field">
+            <label for="sb-req-deposit">Deposit amount (KES)</label>
+            <input type="number" id="sb-req-deposit" name="depositAmount" required min="1" placeholder="e.g. 300">
+            <span class="field-hint">Confirms the request. Balance settled with your rider directly.</span>
           </div>
           <div class="field">
             <label for="sb-req-notes">Notes (optional)</label>
             <textarea id="sb-req-notes" name="notes" rows="2" placeholder="Anything the rider should know"></textarea>
           </div>
-          <button type="submit" class="btn btn-primary">Submit request</button>
+          <button type="submit" class="btn btn-primary" id="sb-request-submit-btn">Submit &amp; pay deposit</button>
           <div id="sb-request-error" class="field-error"></div>
+          <div id="sb-request-status" class="field-hint" aria-live="polite"></div>
         </form>
       </div>
     </section>
@@ -65,8 +70,17 @@ SafariBoda.views.public.request = function () {
     e.preventDefault();
     const form = new FormData(e.target);
     const reference = 'SB-' + Math.random().toString(36).slice(2, 8).toUpperCase();
+    const submitBtn = document.getElementById('sb-request-submit-btn');
+    const statusEl = document.getElementById('sb-request-status');
+    const errorEl = document.getElementById('sb-request-error');
 
-    const { error } = await SafariBoda.supabase.from('orders').insert({
+    submitBtn.disabled = true;
+    errorEl.textContent = '';
+    statusEl.textContent = 'Creating your request…';
+
+    const depositAmount = Number(form.get('depositAmount'));
+
+    const { data: order, error } = await SafariBoda.supabase.from('orders').insert({
       reference,
       source: 'client',
       client_id: SafariBoda.state.user.id,
@@ -75,21 +89,42 @@ SafariBoda.views.public.request = function () {
       dropoff_location: form.get('dropoffLocation'),
       contact_name: form.get('contactName'),
       contact_phone: form.get('contactPhone'),
-      notes: form.get('notes') || null
-      // price_kes / deposit_amount_kes / mpesa_reference intentionally
-      // left null here — set once pricing + Daraja are wired in.
-    });
+      notes: form.get('notes') || null,
+      deposit_amount_kes: depositAmount
+    }).select().single();
 
     if (error) {
-      document.getElementById('sb-request-error').textContent = error.message;
+      errorEl.textContent = error.message;
+      statusEl.textContent = '';
+      submitBtn.disabled = false;
       return;
+    }
+
+    // Trigger the real M-Pesa STK push via the Edge Function
+    statusEl.textContent = 'Sending payment prompt to your phone…';
+
+    const { data: stkResult, error: stkError } = await SafariBoda.supabase.functions.invoke('mpesa-stk-push', {
+      body: { orderId: order.id, phone: form.get('contactPhone'), amountKes: depositAmount }
+    });
+
+    if (stkError || !stkResult?.success) {
+      // The order still exists — payment just didn't go through yet.
+      // Don't block the flow entirely; let them know and let admin follow up.
+      statusEl.textContent = '';
+      errorEl.textContent = 'Request saved, but the payment prompt could not be sent right now. We\'ll follow up by phone.';
+    } else {
+      statusEl.textContent = '';
     }
 
     document.getElementById('app').innerHTML = `
       <div class="container sb-section" style="text-align:center;">
         <h1>Request submitted</h1>
         <p class="mono" style="margin: var(--space-4) 0;">${reference}</p>
-        <p class="sb-section-sub" style="margin: 0 auto var(--space-6);">We'll assign a rider and reach out on the number you provided.</p>
+        <p class="sb-section-sub" style="margin: 0 auto var(--space-6);">
+          ${stkResult?.success
+            ? 'Check your phone for the M-Pesa PIN prompt to confirm your deposit.'
+            : 'We\'ll assign a rider and reach out on the number you provided.'}
+        </p>
         <a href="#/" class="btn btn-secondary">Back to home</a>
       </div>
     `;
