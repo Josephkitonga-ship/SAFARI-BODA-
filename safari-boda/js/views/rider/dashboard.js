@@ -1,9 +1,7 @@
 /* ============================================
    SAFARI BODA — RIDER DASHBOARD VIEW
-   Summary for the signed-in rider, with a nudge to
-   complete their profile if they haven't yet —
-   completing it improves their ranking in the admin's
-   assignment sort (see admin/orders.js).
+   Summary for the signed-in rider: their own status
+   + a quick count of assigned/pending orders.
    ============================================ */
 
 SafariBoda.views.rider.dashboard = async function () {
@@ -28,18 +26,10 @@ SafariBoda.views.rider.dashboard = async function () {
     <div class="sb-rider-header">
       <div class="container">
         <h1>Welcome, ${rider?.full_name || SafariBoda.state.profile?.full_name || ''}</h1>
-        <p>${rider?.verified ? 'Verified rider' : 'Awaiting verification'} · ${rider?.service_area} · ${SafariBoda.utils.format.statusLabel(rider?.service_capability || 'transport')}</p>
+        <p>${rider?.verified ? 'Verified rider' : 'Awaiting verification'} · ${rider?.service_area}</p>
       </div>
     </div>
     <div class="container sb-section">
-      ${!rider?.profile_completed ? `
-        <div class="callout" style="margin-bottom: var(--space-8);">
-          <strong>Complete your profile</strong> — add your parking stage and the type of work you want (transport, delivery, or both). Riders with a completed profile rank higher when we're matching orders.
-          <div style="margin-top: var(--space-4);">
-            <a href="#/rider/profile" class="btn btn-primary">Complete profile</a>
-          </div>
-        </div>
-      ` : ''}
       <div class="sb-admin-kpi-grid">
         <div class="sb-admin-kpi-card">
           <div class="sb-admin-kpi-value">${assignedCount}</div>
@@ -50,7 +40,7 @@ SafariBoda.views.rider.dashboard = async function () {
           <div class="sb-admin-kpi-label">Completed</div>
         </div>
       </div>
-      <a href="#/rider/orders" class="btn btn-secondary" style="margin-top:var(--space-8);">View my orders</a>
+      <a href="#/rider/orders" class="btn btn-primary" style="margin-top:var(--space-8);">View my orders</a>
     </div>
   `;
 };

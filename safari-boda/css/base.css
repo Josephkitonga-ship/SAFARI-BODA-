@@ -1,0 +1,148 @@
+/* ============================================
+   SAFARI BODA — DESIGN TOKENS
+   The road from Kimana to Amboseli: dust, dry
+   grass, acacia shade, and Kilimanjaro on the
+   horizon. Not a generic glass palette — every
+   color is sourced from this specific place.
+   ============================================ */
+
+:root {
+  /* Color tokens */
+  --savanna-cream:   #F7F2E4;  /* base background — dry-season grass, warm */
+  --acacia-shadow:   #1F1D14;  /* near-black text — pushed darker for real contrast */
+  --sage-bush:       #8FA35E;  /* secondary green — scrubland, lighter so it doesn't fight murram */
+  --murram-orange:   #E0673A;  /* primary accent — more saturated, the road, meant to pop */
+  --forest-deep:     #2B4030;  /* dark green — rider/admin surfaces, richer/darker */
+  --acacia-gold:     #E8B23D;  /* highlight accent — late afternoon light */
+  --surface-white:   #FFFDF8;  /* cards — brighter than background, not blended into it */
+
+  /* Derived / functional tones */
+  --cream-dim:       #ECE3C8;
+  --cream-glass:     rgba(247, 242, 228, 0.68);
+  --shadow-glass:    rgba(31, 29, 20, 0.10);
+  --line-hairline:   rgba(31, 29, 20, 0.14);
+  --murram-glow:     rgba(224, 103, 58, 0.28);
+  --success-tone:    #4C6B34;
+  --danger-tone:     #B0402A;
+  --white:           #FFFDF8;
+
+  /* Typography */
+  --font-display: 'Space Grotesk', 'Arial Narrow', sans-serif;
+  --font-body:    'Inter', -apple-system, 'Segoe UI', sans-serif;
+  --font-mono:    'JetBrains Mono', 'Courier New', monospace;
+
+  /* Type scale */
+  --text-xs:   0.75rem;
+  --text-sm:   0.875rem;
+  --text-base: 1rem;
+  --text-lg:   1.125rem;
+  --text-xl:   1.5rem;
+  --text-2xl:  2rem;
+  --text-3xl:  2.75rem;
+  --text-4xl:  3.75rem;
+
+  /* Spacing scale */
+  --space-1: 0.25rem;
+  --space-2: 0.5rem;
+  --space-3: 0.75rem;
+  --space-4: 1rem;
+  --space-6: 1.5rem;
+  --space-8: 2rem;
+  --space-12: 3rem;
+  --space-16: 4rem;
+  --space-24: 6rem;
+
+  /* Radius + shadow */
+  --radius-sm: 6px;
+  --radius-md: 12px;
+  --radius-lg: 20px;
+  --shadow-soft: 0 10px 32px var(--shadow-glass);
+  --shadow-lift: 0 20px 56px rgba(31, 29, 20, 0.18);
+
+  /* Motion */
+  --ease-out: cubic-bezier(0.16, 1, 0.3, 1);
+  --duration-fast: 160ms;
+  --duration-base: 320ms;
+}
+
+/* ============================================
+   RESET
+   ============================================ */
+
+*, *::before, *::after {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+html {
+  scroll-behavior: smooth;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  html {
+    scroll-behavior: auto;
+  }
+  *, *::before, *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+  }
+}
+
+body {
+  font-family: var(--font-body);
+  background: var(--savanna-cream);
+  color: var(--acacia-shadow);
+  font-size: var(--text-base);
+  line-height: 1.6;
+  min-height: 100vh;
+  -webkit-font-smoothing: antialiased;
+}
+
+h1, h2, h3, h4 {
+  font-family: var(--font-display);
+  line-height: 1.15;
+  letter-spacing: -0.01em;
+  font-weight: 600;
+}
+
+a {
+  color: inherit;
+  text-decoration: none;
+}
+
+button {
+  font-family: var(--font-body);
+  cursor: pointer;
+  border: none;
+  background: none;
+}
+
+img {
+  max-width: 100%;
+  display: block;
+}
+
+/* Visible keyboard focus everywhere — no outline: none without replacement */
+:focus-visible {
+  outline: 2px solid var(--murram-orange);
+  outline-offset: 3px;
+  border-radius: 2px;
+}
+
+.mono {
+  font-family: var(--font-mono);
+}
+
+.sr-only {
+  position: absolute;
+  width: 1px; height: 1px;
+  overflow: hidden;
+  clip: rect(0, 0, 0, 0);
+  white-space: nowrap;
+}
+
+#app {
+  min-height: 100vh;
+}

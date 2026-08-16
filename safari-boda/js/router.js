@@ -19,7 +19,6 @@ SafariBoda.router = {
 
     { pattern: '#/rider',            handler: () => SafariBoda.views.rider.dashboard(), guard: 'rider' },
     { pattern: '#/rider/orders',     handler: () => SafariBoda.views.rider.bookings(),  guard: 'rider' },
-    { pattern: '#/rider/profile',    handler: () => SafariBoda.views.rider.completeProfile(), guard: 'rider' },
 
     { pattern: '#/admin',            handler: () => SafariBoda.views.admin.dashboard(), guard: 'admin' },
     { pattern: '#/admin/riders',     handler: () => SafariBoda.views.admin.riders(),    guard: 'admin' },
